@@ -7,5 +7,5 @@
   </defs>
   <rect width="64" height="64" rx="16" fill="#171b29"/>
   <rect x="7" y="7" width="50" height="50" rx="13" fill="url(#pixo-gradient)"/>
-  <path fill="#171322" d="m32 14 3.8 12.2L48 30l-12.2 3.8L32 46l-3.8-12.2L16 30l12.2-3.8L32 14Z"/>
+  <path transform="translate(0 2)" fill="#171322" d="m32 14 3.8 12.2L48 30l-12.2 3.8L32 46l-3.8-12.2L16 30l12.2-3.8L32 14Z"/>
 </svg>
