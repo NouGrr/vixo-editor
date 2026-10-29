@@ -19,6 +19,9 @@ Vixo est un éditeur vidéo directement utilisable dans le navigateur. Il foncti
 
 ### Couper
 
+- bouton **Couper ici** pour scinder la vidéo à la position du curseur ;
+- sélection, suppression et rétablissement des passages dans la timeline ;
+- lecture et export des passages conservés dans leur ordre d’origine ;
 - réglage du début et de la fin de l’extrait ;
 - sélection depuis la timeline ou saisie des temps en secondes ;
 - aperçu de l’extrait ;
@@ -84,7 +87,7 @@ Les exports disponibles sont :
 - GIF pour les animations ;
 - PNG pour les captures d’image.
 
-Cette version est conçue pour les clips courts. La fusion de clips, la suppression de passages intermédiaires et la timeline multipiste ne sont pas encore disponibles.
+Cette version est conçue pour les clips courts. La fusion de clips et la timeline multipiste ne sont pas encore disponibles.
 
 ## Développement local
 
