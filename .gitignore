@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.openai-local/
+test-results/
+
+.DS_Store
+.env*
+.openai/
+playwright-report/
