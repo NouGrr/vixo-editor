@@ -1,5 +1,9 @@
 # Vixo
 
+Site public : **https://nougrr.github.io/vixo-editor/**
+
+Chaque push sur `main` lance les tests, construit le site puis le déploie automatiquement sur GitHub Pages.
+
 MVP de montage vidéo local en français. Next.js App Router, TypeScript, Tailwind CSS et Lucide. 
 
 ## Démarrage
@@ -30,3 +34,5 @@ La fusion de clips, la suppression de passages intermédiaires, la timeline mult
 Déploiement statique : `out/`. L’origine de production des canonical et du sitemap est définie dans `app/layout.tsx`, `app/robots.ts` et `app/sitemap.ts`. L’export n’est déclaré terminé qu’après un code de sortie FFmpeg égal à zéro et lecture effective du fichier résultat.
 
 Tests navigateur : `npx playwright install chromium`, servir `out/` sur le port 3000, puis `npx playwright test`. Test validé sous Chromium : import WebM synthétique avec audio, recadrage carré et texte, export MP4, réimport du résultat (240 × 240), extraction WAV, GIF et accueil mobile sans débordement.
+
+Build GitHub Pages en local : `NEXT_PUBLIC_BASE_PATH=/vixo-editor npm run build`. Le préfixe est appliqué aux pages, aux scripts et au moteur FFmpeg. Pour un hébergement à la racine, laisser cette variable vide.
