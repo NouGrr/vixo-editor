@@ -1,5 +1,5 @@
 import {test} from 'node:test';import assert from 'node:assert/strict';import {type Clip,splitClip,projectDuration,zoomFactor,clipBox} from '../lib/project';
-const clip:Clip={id:'c',assetId:'a',start:3,in:2,out:6,track:0,speed:2,volume:100,scale:.4,x:75,y:75,opacity:100,rotation:0,fit:'contain',effect:'in',amount:50};
+const clip:Clip={id:'c',assetId:'a',start:3,in:2,out:6,track:0,speed:2,volume:100,scale:.4,x:75,y:75,opacity:100,rotation:0,fit:'contain',effect:'in',amount:50,focusX:75,focusY:25};
 test('la coupe respecte le décalage et la vitesse de la source',()=>{const parts=splitClip(clip,4);assert.equal(parts.length,2);assert.equal(parts[0].out,4);assert.equal(parts[1].in,4);assert.equal(parts[1].start,4);assert.equal(projectDuration(parts),5);assert.equal(splitClip(clip,3.01).length,1);});
 test('les pistes superposées ne rallongent pas le montage par addition',()=>{assert.equal(projectDuration([clip,{...clip,start:0,out:4,speed:1}]),5);assert.equal(projectDuration([]),0);});
 test('zoom et dézoom ont des bornes cohérentes avec les dimensions de superposition',()=>{assert.equal(zoomFactor(clip,0),1);assert.equal(zoomFactor(clip,2),1.5);assert.equal(zoomFactor({...clip,effect:'out'},0),1.5);assert.equal(zoomFactor({...clip,effect:'out'},2),1);assert.deepEqual(clipBox(clip,320,240),{width:128,height:96,x:176,y:132});});

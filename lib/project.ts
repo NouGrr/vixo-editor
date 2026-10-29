@@ -1,12 +1,12 @@
 export type MediaKind='video'|'image'|'audio';
 export type Asset={id:string;file:File;url:string;kind:MediaKind;width:number;height:number;duration:number;poster?:string};
-export type Clip={id:string;assetId:string;start:number;in:number;out:number;track:number;speed:number;volume:number;scale:number;x:number;y:number;opacity:number;rotation:number;fit:'contain'|'cover';effect:'none'|'in'|'out';amount:number};
+export type Clip={id:string;assetId:string;start:number;in:number;out:number;track:number;speed:number;volume:number;scale:number;x:number;y:number;opacity:number;rotation:number;fit:'contain'|'cover';effect:'none'|'in'|'out';amount:number;focusX:number;focusY:number};
 export type ProjectSettings={ratio:string;resolution:number;format:'mp4'|'webm';quality:'high'|'balanced'|'small';text:string;color:string;textSize:number};
 export const defaultSettings:ProjectSettings={ratio:'original',resolution:720,format:'mp4',quality:'balanced',text:'',color:'#ffffff',textSize:36};
 export const clipDuration=(c:Clip)=>(c.out-c.in)/c.speed;
 export const projectDuration=(clips:Clip[])=>clips.reduce((n,c)=>Math.max(n,c.start+clipDuration(c)),0);
 export const uid=()=>crypto.randomUUID();
-export function createClip(asset:Asset,start:number,track:number,overlay=false):Clip{return {id:uid(),assetId:asset.id,start,in:0,out:asset.duration,track,speed:1,volume:100,scale:overlay&&asset.kind!=='audio'?.4:1,x:overlay?72:50,y:overlay?72:50,opacity:100,rotation:0,fit:'contain',effect:'none',amount:25};}
+export function createClip(asset:Asset,start:number,track:number,overlay=false):Clip{return {id:uid(),assetId:asset.id,start,in:0,out:asset.duration,track,speed:1,volume:100,scale:overlay&&asset.kind!=='audio'?.4:1,x:overlay?72:50,y:overlay?72:50,opacity:100,rotation:0,fit:'contain',effect:'none',amount:25,focusX:50,focusY:50};}
 export function splitClip(c:Clip,time:number):Clip[]{const elapsed=time-c.start,d=clipDuration(c);if(elapsed<.1-1e-8||d-elapsed<.1-1e-8)return [c];const at=c.in+elapsed*c.speed;return [{...c,out:at},{...c,id:uid(),start:time,in:at}];}
 export function projectSize(assets:Asset[],settings:ProjectSettings){const source=assets.find(a=>a.kind!=='audio');const ratio=settings.ratio==='original'?(source?source.width/source.height:16/9):settings.ratio.split(':').map(Number).reduce((a,b)=>a/b);const h=Math.max(2,Math.floor(settings.resolution/2)*2);return {width:Math.max(2,Math.floor(h*ratio/2)*2),height:h};}
 export function zoomFactor(c:Clip,elapsed:number){const p=Math.max(0,Math.min(1,elapsed/clipDuration(c)));return 1+(c.effect==='none'?0:c.amount/100*(c.effect==='in'?p:1-p));}
