@@ -17,6 +17,19 @@ Vixo est un éditeur vidéo directement utilisable dans le navigateur. Il foncti
 
 ## Fonctionnalités
 
+### Espace de montage
+
+- timeline avec vignettes de la vidéo source ;
+- zoom de 100 % à 800 % et ajustement à la largeur ;
+- curseur déplaçable sur la règle, à la souris ou au toucher ;
+- sélection des passages et affichage de leurs bornes ;
+- bande de texte cliquable pour accéder à ses réglages ;
+- panneau **Média** avec les informations du fichier importé ;
+- annulation et rétablissement des 80 dernières modifications, pendant la session ;
+- raccourcis **Espace** (lecture/pause), **S** (couper), **Suppr** (retirer), **Ctrl/Cmd+Z** (annuler) et **Ctrl/Cmd+Maj+Z** (rétablir).
+
+La timeline représente la vidéo source : les passages rayés sont exclus de la lecture et de l’export. La bande de texte sert à ouvrir les réglages ; le texte reste affiché pendant tout l’extrait conservé.
+
 ### Couper
 
 - bouton **Couper ici** pour scinder la vidéo à la position du curseur ;
