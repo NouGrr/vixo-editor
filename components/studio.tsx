@@ -6,6 +6,7 @@ import {clock} from '@/lib/video';
 import {localPath} from '@/lib/site';
 import type {FFmpeg} from '@ffmpeg/ffmpeg';
 import ProjectPreview from './project-preview';
+export const initialMediaAccept='video/mp4,video/quicktime,video/webm,audio/mpeg,audio/wav,audio/mp4,audio/ogg,audio/aac,audio/flac,.mov,.m4v,.m4a';
 export const mediaAccept='video/mp4,video/quicktime,video/webm,image/png,image/jpeg,image/webp,audio/mpeg,audio/wav,audio/mp4,audio/ogg,audio/aac,audio/flac,.mov,.m4v,.m4a';
 export function Brand(){return <a className="brand" href={localPath('')} aria-label="Vixo accueil"><span className="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="m16 0 3.8 12.2L32 16l-12.2 3.8L16 32l-3.8-12.2L0 16l12.2-3.8Z"/></svg></span>Vixo</a>}
 type Snapshot={clips:Clip[];settings:ProjectSettings;selected:string};

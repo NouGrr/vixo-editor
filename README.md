@@ -9,7 +9,7 @@ Vixo est un éditeur vidéo directement utilisable dans le navigateur. Il foncti
 ## Utilisation rapide
 
 1. Ouvrez [Vixo](https://nougrr.github.io/vixo-editor/).
-2. Cliquez sur **Importer une vidéo**, ou déposez un fichier dans la zone centrale.
+2. Cliquez sur **Importer une vidéo ou un audio**, ou déposez un fichier vidéo/audio dans la zone centrale.
 3. Sélectionnez un outil dans la barre de gauche : **Couper**, **Recadrer**, **Compresser**, **Texte**, **Audio** ou **GIF**.
 4. Réglez votre vidéo avec les contrôles disponibles et vérifiez l’aperçu.
 5. Cliquez sur **Exporter**, choisissez vos réglages, puis sur **Exporter ma vidéo**.
@@ -104,7 +104,8 @@ Les exports disponibles sont :
 
 Vixo permet maintenant de construire un montage avec plusieurs médias :
 
-- import de plusieurs vidéos, images PNG/JPG/WebP et fichiers audio ;
+- au démarrage, import d’une ou plusieurs vidéos et pistes audio ;
+- dans le projet ouvert, ajout d’images PNG/JPG/WebP et de nouvelles pistes audio ;
 - bibliothèque de médias conservée pendant toute la session ;
 - ajout d’un média à la suite du montage, au curseur ou en superposition ;
 - pistes vidéo et audio indépendantes, avec les pistes supérieures affichées au premier plan ;
