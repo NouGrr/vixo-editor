@@ -1,23 +1,103 @@
 # Vixo
 
-Site public : **https://nougrr.github.io/vixo-editor/**
+Vixo est un éditeur vidéo directement utilisable dans le navigateur. Il fonctionne côté client : les vidéos importées restent sur votre appareil et aucune installation n’est nécessaire.
 
-Chaque push sur `main` lance les tests, construit le site puis le déploie automatiquement sur GitHub Pages.
+## Ouvrir Vixo en ligne
 
-MVP de montage vidéo local en français. Next.js App Router, TypeScript, Tailwind CSS et Lucide. 
+👉 [Ouvrir Vixo](https://nougrr.github.io/vixo-editor/)
 
-## Démarrage
+## Utilisation rapide
 
-Node.js 22 ou supérieur :
+1. Ouvrez [Vixo](https://nougrr.github.io/vixo-editor/).
+2. Cliquez sur **Importer une vidéo**, ou déposez un fichier dans la zone centrale.
+3. Sélectionnez un outil dans la barre de gauche : **Couper**, **Recadrer**, **Compresser**, **Texte**, **Audio** ou **GIF**.
+4. Réglez votre vidéo avec les contrôles disponibles et vérifiez l’aperçu.
+5. Cliquez sur **Exporter**, choisissez vos réglages, puis sur **Exporter ma vidéo**.
+6. Une fois le traitement terminé, cliquez sur **Télécharger** pour récupérer le résultat.
+
+## Fonctionnalités
+
+### Couper
+
+- réglage du début et de la fin de l’extrait ;
+- sélection depuis la timeline ou saisie des temps en secondes ;
+- aperçu de l’extrait ;
+- vitesse de lecture de 0,5× à 2×.
+
+### Recadrer
+
+- format original ;
+- paysage 16:9 ;
+- Story et Reel 9:16 ;
+- carré 1:1 ;
+- portrait 4:5 ;
+- rotation par pas de 90 degrés ;
+- aperçu du cadrage avant export.
+
+Le recadrage est centré. Les modifications sont appliquées au fichier exporté ; la vidéo originale reste intacte.
+
+### Compresser et convertir
+
+- export en MP4 ou WebM ;
+- résolutions 480p, 720p ou 1080p selon la source ;
+- conservation de la résolution source pour les vidéos plus petites ;
+- compression légère, équilibrée ou forte ;
+- progression pendant l’encodage ;
+- téléchargement sans filigrane.
+
+La taille finale dépend de la vidéo et des réglages choisis. Une compression ne garantit pas un fichier plus petit que l’original.
+
+### Texte
+
+- ajout d’un texte affiché pendant tout l’extrait ;
+- taille et couleur personnalisables ;
+- position en bas, au centre ;
+- aperçu et intégration dans les exports vidéo.
+
+### Audio
+
+- réglage du volume ;
+- suppression du son ;
+- extraction de la bande sonore de l’extrait au format WAV, à sa vitesse d’origine.
+
+### GIF et capture d’image
+
+- création d’un GIF à partir d’un extrait de 30 secondes maximum ;
+- animation à 12 images par seconde, avec une largeur maximale de 640 pixels ;
+- export GIF sans son ni texte ajouté ;
+- capture de l’image affichée au format PNG.
+
+## Traitement vidéo
+
+Vixo utilise FFmpeg.wasm directement dans le navigateur. Le moteur est chargé depuis le site au premier export ; ce premier lancement peut demander quelques instants.
+
+Gardez l’onglet ouvert pendant le traitement. Les performances dépendent de votre appareil, de la durée de la vidéo et des réglages d’export.
+
+## Formats pris en charge
+
+L’import accepte les fichiers **MP4**, **MOV** et **WebM**, selon les codecs pris en charge par votre navigateur. La taille maximale d’import est de **500 Mo**.
+
+Les exports disponibles sont :
+
+- MP4 et WebM pour les vidéos ;
+- WAV pour l’audio ;
+- GIF pour les animations ;
+- PNG pour les captures d’image.
+
+Cette version est conçue pour les clips courts. La fusion de clips, la suppression de passages intermédiaires et la timeline multipiste ne sont pas encore disponibles.
+
+## Développement local
+
+Vixo utilise Next.js, TypeScript et Tailwind CSS. Installez Node.js 22 ou supérieur, puis lancez :
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Le moteur FFmpeg mono-thread est servi depuis `public/ffmpeg` : aucun téléversement vidéo, ni dépendance à un CDN pendant le traitement. Son Web Worker est fourni par le bundler Next.js. Pour remettre à jour les fichiers du moteur après une mise à jour de dépendance : `node scripts/prepare-ffmpeg.mjs` (le moteur est réparti en deux fichiers sous la limite de 25 Mo par ressource).
+Ouvrez ensuite [http://localhost:3000](http://localhost:3000).
 
-## Vérifications
+Pour vérifier le projet :
 
 ```sh
 npm run typecheck
@@ -25,14 +105,22 @@ npm test
 npm run build
 ```
 
-## Périmètre
+Les fichiers statiques sont générés dans `out/`. Après une mise à jour de FFmpeg, exécutez `node scripts/prepare-ffmpeg.mjs` pour actualiser les fichiers du moteur.
 
-Import MP4/MOV/WebM selon codecs du navigateur, coupe début/fin, recadrage centré, rotation, vitesse, texte fixe, volume, export MP4/WebM, compression, capture PNG, GIF (30 secondes maximum) et audio WAV. Les vidéos ne quittent pas le navigateur. Limite d’import : 500 Mo. Utiliser des clips courts : FFmpeg.wasm peut épuiser la mémoire du navigateur. Les fichiers temporaires sont effacés après export et les URL objets révoquées après remplacement. Le GIF ne contient pas le texte.
+## Publication
 
-La fusion de clips, la suppression de passages intermédiaires, la timeline multipiste et les abonnements restent à développer dans les phases suivantes. shadcn/ui n’est pas encore intégré ; les contrôles utilisent des éléments HTML natifs. Une validation manuelle sur Safari/iOS et Firefox, ainsi que sur fichiers MOV HEVC et vidéos volumineuses, reste nécessaire avant mise en production publique.
+Le site est publié avec GitHub Pages. Les modifications envoyées sur la branche `main` sont testées, construites et déployées automatiquement par le workflow [`.github/workflows/pages.yml`](https://github.com/NouGrr/vixo-editor/blob/main/.github/workflows/pages.yml).
 
-Déploiement statique : `out/`. L’origine de production des canonical et du sitemap est définie dans `app/layout.tsx`, `app/robots.ts` et `app/sitemap.ts`. L’export n’est déclaré terminé qu’après un code de sortie FFmpeg égal à zéro et lecture effective du fichier résultat.
+Pour reproduire le build GitHub Pages en local :
 
-Tests navigateur : `npx playwright install chromium`, servir `out/` sur le port 3000, puis `npx playwright test`. Test validé sous Chromium : import WebM synthétique avec audio, recadrage carré et texte, export MP4, réimport du résultat (240 × 240), extraction WAV, GIF et accueil mobile sans débordement.
+```sh
+NEXT_PUBLIC_BASE_PATH=/vixo-editor npm run build
+```
 
-Build GitHub Pages en local : `NEXT_PUBLIC_BASE_PATH=/vixo-editor npm run build`. Le préfixe est appliqué aux pages, aux scripts et au moteur FFmpeg. Pour un hébergement à la racine, laisser cette variable vide.
+## Confidentialité
+
+Le montage et les exports sont réalisés côté navigateur. Les vidéos importées ne sont pas envoyées à un serveur Vixo. Aucun compte n’est nécessaire.
+
+## Identité visuelle
+
+Vixo reprend la charte graphique et le favicon de [Pixo](https://nougrr.github.io/pixo-editor/) : fonds bleu nuit, accents lavande et dégradés violet–cyan.
