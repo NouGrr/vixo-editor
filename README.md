@@ -91,7 +91,7 @@ Gardez l’onglet ouvert pendant le traitement. Les performances dépendent de v
 
 ## Formats pris en charge
 
-L’import accepte les fichiers **MP4**, **MOV** et **WebM**, selon les codecs pris en charge par votre navigateur. La taille maximale d’import est de **500 Mo**.
+L’import accepte les vidéos **MP4**, **MOV** et **WebM**, les images **PNG**, **JPG** et **WebP**, ainsi que les fichiers audio **MP3**, **WAV**, **M4A**, **AAC**, **OGG** et **FLAC**, selon les formats pris en charge par votre navigateur. La taille maximale du projet est de **500 Mo** et 24 médias.
 
 Les exports disponibles sont :
 
@@ -100,7 +100,21 @@ Les exports disponibles sont :
 - GIF pour les animations ;
 - PNG pour les captures d’image.
 
-Cette version est conçue pour les clips courts. La fusion de clips et la timeline multipiste ne sont pas encore disponibles.
+## Montage multipiste
+
+Vixo permet maintenant de construire un montage avec plusieurs médias :
+
+- import de plusieurs vidéos, images PNG/JPG/WebP et fichiers audio ;
+- bibliothèque de médias conservée pendant toute la session ;
+- ajout d’un média à la suite du montage, au curseur ou en superposition ;
+- pistes vidéo et audio indépendantes, avec les pistes supérieures affichées au premier plan ;
+- déplacement des éléments sur la timeline par glisser-déposer ;
+- réglage de la durée, du volume, de la vitesse, de la taille, de la position, de l’opacité et de la rotation ;
+- duplication, suppression, coupe et annulation/rétablissement des changements ;
+- effets **Zoom progressif** et **Dézoom progressif** avec intensité réglable ;
+- mixage de l’audio des vidéos et des pistes audio ajoutées.
+
+Les images sont affichées pendant cinq secondes par défaut. Leur durée, leur position et leur taille peuvent être modifiées depuis le panneau Élément. Les médias restent locaux et sont inclus dans l’export uniquement après validation du traitement FFmpeg.
 
 ## Développement local
 
