@@ -155,3 +155,5 @@ Le montage et les exports sont réalisés côté navigateur. Les vidéos import�
 ## Identité visuelle
 
 Vixo reprend la charte graphique de [NEXO](https://nougrr.github.io/nexo/) : fond anthracite, accents lavande et bleu, typographies DM Sans et Space Mono, et grille de petits points violet, cyan et bleu en arrière-plan. Le thème clair utilise les tons crème de la suite.
+
+Le logo Vixo est celui de sa fiche NEXO : un symbole de lecture contouré sur une tuile dégradée bleu pervenche–bleu clair, repris dans l’interface et le favicon.
