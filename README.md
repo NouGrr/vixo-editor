@@ -1,3 +1,7 @@
+# Modif à faire :
+
+Faire fonctionner la création de gif
+
 # Vixo
 
 Vixo est un éditeur vidéo directement utilisable dans le navigateur. Il fonctionne côté client : les vidéos importées restent sur votre appareil et aucune installation n’est nécessaire.
