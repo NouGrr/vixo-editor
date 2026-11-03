@@ -83,7 +83,7 @@ La taille finale dépend de la vidéo et des réglages choisis. Une compression 
 ### GIF et capture d’image
 
 - sélection du début et de la durée d’un extrait GIF, jusqu’à 30 secondes, même dans un montage plus long ;
-- animation en boucle à 12 images par seconde, avec une largeur maximale de 640 pixels et une palette adaptée aux couleurs ;
+- qualité réglable : élevée (20 images/s, 640 px), équilibrée (12 images/s, 640 px) ou légère (8 images/s, 480 px) ;
 - export GIF sans son ni texte ajouté ;
 - capture de l’image affichée au format PNG.
 

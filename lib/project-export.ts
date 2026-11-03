@@ -7,8 +7,10 @@ function containsAudioTrack(bytes:Uint8Array){
 }
 export async function encodeProject(ff:FFmpeg,assets:Asset[],clips:Clip[],settings:ProjectSettings,kind:'video'|'audio'|'gif',onStatus:(s:string)=>void,gifRange?:GifRange){
  const duration=projectDuration(clips),size=projectSize(assets,settings),ext=kind==='audio'?'wav':kind==='gif'?'gif':settings.format;
- const frameRate=kind==='gif'?12:30;
- if(kind==='gif'&&size.width>640){size.height=Math.max(2,Math.round(size.height*640/size.width/2)*2);size.width=640;}
+ const gifFrameRate=settings.quality==='high'?20:settings.quality==='small'?8:12;
+ const gifWidth=settings.quality==='small'?480:640;
+ const frameRate=kind==='gif'?gifFrameRate:30;
+ if(kind==='gif'&&size.width>gifWidth){size.height=Math.max(2,Math.round(size.height*gifWidth/size.width/2)*2);size.width=gifWidth;}
  const start=kind==='gif'?(gifRange?.start??0):0;
  const exportDuration=kind==='gif'?(gifRange?.duration??Math.min(30,duration)):duration;
  if(kind==='gif'&&(!Number.isFinite(start)||!Number.isFinite(exportDuration)||start<0||exportDuration<.1||exportDuration>30||start+exportDuration>duration+1e-6))throw new Error('Choisissez un extrait GIF de 0,1 à 30 secondes dans le montage.');
@@ -30,7 +32,7 @@ export async function encodeProject(ff:FFmpeg,assets:Asset[],clips:Clip[],settin
  if(visual&&settings.text&&kind!=='gif'){const canvas=document.createElement('canvas');canvas.width=size.width;canvas.height=size.height;const ctx=canvas.getContext('2d')!;ctx.font=`600 ${settings.textSize*size.height/720}px sans-serif`;ctx.textAlign='center';ctx.fillStyle=settings.color;ctx.shadowColor='#000';ctx.shadowBlur=4;ctx.fillText(settings.text,size.width/2,size.height*.85,size.width*.9);const blob=await new Promise<Blob|null>(r=>canvas.toBlob(r));if(!blob)throw new Error('Impossible de préparer le texte.');temporary.push('title.png');await ff.writeFile('title.png',new Uint8Array(await blob.arrayBuffer()));inputs.push('-i','title.png');graph.push(`[${last}][${used.length}:v]overlay=0:0[title]`);last='title';}
  if(kind==='gif'){
  // Quantize each frame without retaining the entire animation in WASM memory.
- graph.push(`[${last}]trim=start=${start}:duration=${exportDuration},setpts=PTS-STARTPTS,fps=12,scale=w='min(640,iw)':h=-2:flags=lanczos,split[gifframes][paletteframes]`);
+ graph.push(`[${last}]trim=start=${start}:duration=${exportDuration},setpts=PTS-STARTPTS,fps=${gifFrameRate},scale=w='min(${gifWidth},iw)':h=-2:flags=lanczos,split[gifframes][paletteframes]`);
  graph.push('[paletteframes]palettegen=stats_mode=single[palette]');
  graph.push('[gifframes][palette]paletteuse=new=1:dither=sierra2_4a[outv]');
  }else if(visual)graph.push(`[${last}]format=yuv420p[outv]`);
