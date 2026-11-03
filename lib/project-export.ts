@@ -1,6 +1,10 @@
 import type {FFmpeg} from '@ffmpeg/ffmpeg';
 import {type Asset,type Clip,type ProjectSettings,clipDuration,clipBox,projectDuration,projectSize} from './project';
 export type GifRange={start:number;duration:number};
+function containsAudioTrack(bytes:Uint8Array){
+ const text=new TextDecoder('latin1').decode(bytes);
+ return text.includes('soun')||text.includes('A_OPUS')||text.includes('A_VORBIS')||text.includes('OpusHead');
+}
 export async function encodeProject(ff:FFmpeg,assets:Asset[],clips:Clip[],settings:ProjectSettings,kind:'video'|'audio'|'gif',onStatus:(s:string)=>void,gifRange?:GifRange){
  const duration=projectDuration(clips),size=projectSize(assets,settings),ext=kind==='audio'?'wav':kind==='gif'?'gif':settings.format;
  const frameRate=kind==='gif'?12:30;
@@ -11,7 +15,7 @@ export async function encodeProject(ff:FFmpeg,assets:Asset[],clips:Clip[],settin
  if(kind==='gif'&&!clips.some(c=>assets.some(a=>a.id===c.assetId&&a.kind!=='audio')&&c.start<start+exportDuration&&c.start+clipDuration(c)>start))throw new Error('Ajoutez une vidéo ou une image dans l’extrait GIF.');
  const output=`project.${ext}`,temporary:string[]=[];const used=assets.filter(a=>clips.some(c=>c.assetId===a.id));
  const inputs:string[]=[],audioAssets=new Set<string>();
- try{for(const [i,a] of used.entries()){onStatus(`Préparation du média ${i+1}/${used.length}…`);const name=`asset-${i}`;temporary.push(name);await ff.writeFile(name,new Uint8Array(await a.file.arrayBuffer()));inputs.push(...(a.kind==='image'?['-loop','1','-framerate',String(frameRate)]:a.kind==='video'?['-stream_loop','-1']:[]),'-i',name);if(kind!=='gif'&&a.kind==='audio')audioAssets.add(a.id);}
+ try{for(const [i,a] of used.entries()){onStatus(`Préparation du média ${i+1}/${used.length}…`);const name=`asset-${i}`;temporary.push(name);const bytes=new Uint8Array(await a.file.arrayBuffer());await ff.writeFile(name,bytes);inputs.push(...(a.kind==='image'?['-loop','1','-framerate',String(frameRate)]:a.kind==='video'?['-stream_loop','-1']:[]),'-i',name);if(kind!=='gif'&&(a.kind==='audio'||a.kind==='video'&&containsAudioTrack(bytes)))audioAssets.add(a.id);}
  const graph:string[]=[];const visual=kind!=='audio',audio=kind!=='gif';let last='background';
  if(visual)graph.push(`color=c=black:s=${size.width}x${size.height}:r=${frameRate}:d=${duration},format=rgba[background]`);
  if(audio)graph.push(`anullsrc=r=48000:cl=stereo:d=${duration}[silence]`);
